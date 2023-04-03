@@ -1,10 +1,12 @@
 import { HttpClientModule } from '@angular/common/http'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
-import { Injectable } from '@angular/core'
+import { Injectable, NO_ERRORS_SCHEMA } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { By } from '@angular/platform-browser'
 import { Observable, of } from 'rxjs'
 import { User } from 'src/app/core/interfaces/user'
 import { UserService } from 'src/app/core/services/user.service'
+import { UserCardComponent } from './user-card/user-card.component'
 import { UsersComponent } from './users.component'
 
 /*@Injectable()
@@ -20,6 +22,8 @@ class UserServiceMock extends UserService {
     }
 }*/
 
+const NAME = 'ana'
+
 describe('Test UsersComponent', () => {
     let fixture: ComponentFixture<UsersComponent>
     let tpl: HTMLElement
@@ -29,8 +33,9 @@ describe('Test UsersComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [UsersComponent],
+            declarations: [UsersComponent, UserCardComponent],
             imports: [HttpClientTestingModule],
+            schemas: [NO_ERRORS_SCHEMA]
             /*providers: [{
                 provide: UserService,
                 useClass: UserServiceMock
@@ -53,16 +58,20 @@ describe('Test UsersComponent', () => {
         requestHttp.flush([
             {
                 id: 1,
-                name: 'ana',
+                name: NAME,
                 email: 'ana@gmail.com'
             }
         ])
 
         fixture.detectChanges() // appliquer le tableau users au DOM
         
-        const cards = tpl.querySelectorAll('.article')
+        const cards = tpl.querySelectorAll('app-user-card')
         expect(component.users.length).toBeGreaterThan(0)
         expect(cards.length).toBe(component.users.length)
+
+        // test intégration
+        const cardComponent = fixture.debugElement.query(By.directive(UserCardComponent))
+        expect(cardComponent.componentInstance.user.name).toBe(NAME)
     })
 
     afterEach(() => {
