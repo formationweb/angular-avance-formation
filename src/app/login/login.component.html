@@ -1,4 +1,14 @@
 <form [formGroup]="form" (ngSubmit)="login()">
+
+    <div *ngIf="form.invalid">
+        <div *ngIf="propEmail.hasError('required')">
+            Email obligatoire
+        </div>
+        <div *ngIf="propEmail.hasError('emailExists')">
+            Email existe déjà !
+        </div>
+    </div>
+
     <label>Email</label>
     <input type="text" [formControl]="propEmail">
 
