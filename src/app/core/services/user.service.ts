@@ -31,6 +31,16 @@ export class UserService {
             )
     }
 
+    create(payload: Omit<User, 'id'>): Observable<User> {
+        return this.http.post<User>(this.url, payload)
+            .pipe(
+                tap((userCreated: User) => {
+                    const users = this._users$.value
+                    this._users$.next([ ...users, userCreated ])
+                })
+            )
+    }
+
     /*checkEmail(input: AbstractControl): Observable<{ emailExists: boolean } | null> {
         return this.http.get<User>(this.url + '/1')
             .pipe(

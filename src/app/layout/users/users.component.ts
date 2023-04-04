@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
+import { NgForm } from '@angular/forms';
 import { interval, Observable, Subscription } from 'rxjs';
 import { User } from 'src/app/core/interfaces/user';
 import { UserService } from 'src/app/core/services/user.service';
@@ -21,6 +22,10 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.userService.search$.subscribe((str: string) => {
             console.log(str)
         })
+    }
+
+    createUser(form: NgForm) {
+        this.userService.create(form.value).subscribe()
     }
 
     ngOnDestroy() {
