@@ -28,6 +28,10 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.userService.create(form.value).subscribe()
     }
 
+    deleteUser(id: number) {
+        this.userService.delete(id).subscribe()
+    }
+ 
     ngOnDestroy() {
         this.subscription.unsubscribe()
     } 
