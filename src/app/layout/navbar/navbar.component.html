@@ -1,7 +1,14 @@
 <nav>
   <ul>
-    <li><strong>{{ title }}</strong></li>
+    <li>
+      <strong>{{ title$ | async }}</strong>
+      <button (click)="changeTitle()">Modifier titre</button>
+    </li>
   </ul>
   <ul>
+    <li>
+      <input type="text" placeholder="Rechercher" [formControl]="search">
+      <button routerLink="/login">Se connecter</button>
+    </li>
   </ul>
 </nav>
