@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
-import { BehaviorSubject, lastValueFrom, map, Observable, tap } from "rxjs";
+import { BehaviorSubject, catchError, lastValueFrom, map, Observable, retry, tap } from "rxjs";
 import { User } from "../interfaces/user";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,10 @@ export class UserService {
     private _users$: BehaviorSubject<User[]> = new BehaviorSubject([] as User[])
     readonly users$: Observable<User[]> = this._users$.asObservable()
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private notification: NotificationService
+    ) {}
 
     setSearch(val: string) {
         this._search$.next(val)
@@ -32,11 +36,16 @@ export class UserService {
     }
 
     create(payload: Omit<User, 'id'>): Observable<User> {
-        return this.http.post<User>(this.url, payload)
+        return this.http.post<User>(this.url + '/zduegurguiuir', payload)
             .pipe(
                 tap((userCreated: User) => {
                     const users = this._users$.value
                     this._users$.next([ ...users, userCreated ])
+                    this.notification.success('Utilisateur créé !')
+                }),
+                catchError((err) => {
+                    this.notification.error('Erreur')
+                    throw err
                 })
             )
     }
