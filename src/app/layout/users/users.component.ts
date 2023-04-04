@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
-import { interval, Subscription } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { User } from 'src/app/core/interfaces/user';
 import { UserService } from 'src/app/core/services/user.service';
 
@@ -8,7 +8,7 @@ import { UserService } from 'src/app/core/services/user.service';
     templateUrl: 'users.component.html'
 })
 export class UsersComponent implements OnInit, OnDestroy {
-    users: User[] = []
+    users$: Observable<User[]> = this.userService.users$
     subscription!: Subscription
 
     constructor(private userService: UserService) { }
@@ -17,9 +17,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.subscription = interval(1000).subscribe((i) => {
             // console.log(i)
         })
-        this.userService.getAll().subscribe((users: User[]) => {
-            this.users = users
-        })
+        this.userService.getAll().subscribe()
         this.userService.search$.subscribe((str: string) => {
             console.log(str)
         })

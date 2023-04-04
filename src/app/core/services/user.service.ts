@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
-import { BehaviorSubject, lastValueFrom, map, Observable } from "rxjs";
+import { BehaviorSubject, lastValueFrom, map, Observable, tap } from "rxjs";
 import { User } from "../interfaces/user";
 
 @Injectable({
@@ -12,6 +12,9 @@ export class UserService {
     private _search$: BehaviorSubject<string> = new BehaviorSubject('')
     readonly search$ = this._search$.asObservable()
 
+    private _users$: BehaviorSubject<User[]> = new BehaviorSubject([] as User[])
+    readonly users$: Observable<User[]> = this._users$.asObservable()
+
     constructor(private http: HttpClient) {}
 
     setSearch(val: string) {
@@ -20,6 +23,12 @@ export class UserService {
 
     getAll(): Observable<User[]> {
         return this.http.get<User[]>(this.url)
+            .pipe(
+                tap((users: User[]) => {
+                   // const listUsers = this._users$.value
+                    this._users$.next(users)
+                })
+            )
     }
 
     /*checkEmail(input: AbstractControl): Observable<{ emailExists: boolean } | null> {
