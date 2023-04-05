@@ -31,32 +31,10 @@ export class UserService {
 
     create(payload: Omit<User, 'id'>): Observable<User> {
         return this.http.post<User>(this.url, payload)
-            .pipe(
-                tap((userCreated: User) => {
-                    const users = this._users$.value
-                    this._users$.next([ ...users, userCreated ])
-                    this.notification.success('Utilisateur créé !')
-                }),
-                catchError((err) => {
-                    this.notification.error('Erreur')
-                    throw err
-                })
-            )
     }
 
     delete(id: number): Observable<void> {
         return this.http.delete<void>(this.url + '/' + id)
-            .pipe(
-                tap(() => {
-                    const users = this._users$.value.filter(user => user.id != id)
-                    this._users$.next(users)
-                    this.notification.success('Utilisateur supprimé !')
-                }),
-                catchError((err) => {
-                    this.notification.error('Erreur')
-                    throw err
-                })
-            )
     }
 
     /*checkEmail(input: AbstractControl): Observable<{ emailExists: boolean } | null> {
