@@ -1,8 +1,16 @@
-import { Observable, Subject } from 'rxjs'
+import { combineLatest, forkJoin, interval, map, mergeMap, Observable, of, Subject, switchMap, tap } from 'rxjs'
 
-const ob$ = new Subject()
 
-ob$.subscribe(console.log)
-ob$.subscribe(console.log)
+const ob1$ = of(1)
+const ob2$ = of('a')
 
-ob$.next(Math.random())
+ob1$.pipe(
+    switchMap((nb) => {
+        return ob2$
+            .pipe(
+                tap((letter) => {
+                    console.log(nb, letter)
+                })
+            )
+    })
+).subscribe()

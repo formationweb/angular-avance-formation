@@ -5,6 +5,11 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { LoginModule } from './login/login.module';
 import { InterceptorService } from './core/services/interceptor.service';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from './store/users/users.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { UsersEffect } from './store/users/users.effect';
 
 @NgModule({
   declarations: [
@@ -14,7 +19,10 @@ import { InterceptorService } from './core/services/interceptor.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    LoginModule
+    LoginModule,
+    StoreModule.forRoot({ users: userReducer }),
+    StoreDevtoolsModule.instrument(),
+    EffectsModule.forRoot([ UsersEffect ])
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
