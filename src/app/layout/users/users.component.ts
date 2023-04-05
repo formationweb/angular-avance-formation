@@ -11,6 +11,7 @@ import { UserService } from 'src/app/core/services/user.service';
 export class UsersComponent implements OnInit, OnDestroy {
     users$: Observable<User[]> = this.userService.users$
     subscription!: Subscription
+    mycolor: string = 'red'
 
     constructor(private userService: UserService) { }
 
