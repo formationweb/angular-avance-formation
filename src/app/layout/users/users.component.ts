@@ -5,7 +5,7 @@ import { interval, Observable, Subscription } from 'rxjs';
 import { User } from 'src/app/core/interfaces/user';
 import { UserService } from 'src/app/core/services/user.service';
 import { IStore } from 'src/app/store/store';
-import { userCreate, userGetAll } from 'src/app/store/users/users.action';
+import { userCreate, userDelete, userGetAll } from 'src/app/store/users/users.action';
 import { selectUsersList } from 'src/app/store/users/users.selector';
 
 @Component({
@@ -13,7 +13,7 @@ import { selectUsersList } from 'src/app/store/users/users.selector';
     templateUrl: 'users.component.html'
 })
 export class UsersComponent implements OnInit, OnDestroy {
-    users$: Observable<User[]> = this.store.select(selectUsersList)
+    users$: Observable<User[]> = this.userService.usersFiltered$
     subscription!: Subscription
     mycolor: string = 'red'
 
@@ -37,7 +37,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     deleteUser(id: number) {
-        this.userService.delete(id).subscribe()
+        this.store.dispatch(userDelete({ id }))
     }
  
     ngOnDestroy() {

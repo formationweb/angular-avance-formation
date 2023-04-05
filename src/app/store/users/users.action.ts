@@ -5,7 +5,9 @@ export enum UsersActions {
     GetAll = '[User] Get All',
     GetAllSuccess = '[User] Get All Success',
     Create = '[User] Create',
-    CreateSuccess = '[User] Create Success'
+    CreateSuccess = '[User] Create Success',
+    Delete = '[User] Delete',
+    DeleteSuccess = '[User] DeleteSuccess'
 }
 
 /*export const userGetAll = function() {
@@ -29,4 +31,11 @@ export const userCreate = createAction(UsersActions.Create, props<{
 }>())
 export const userCreateSuccess = createAction(UsersActions.CreateSuccess, props<{
     user: User
+}>())
+
+export const userDelete = createAction(UsersActions.Delete, props<{
+    id: number
+}>())
+export const userDeleteSuccess = createAction(UsersActions.DeleteSuccess, props<{
+    id: number
 }>())
