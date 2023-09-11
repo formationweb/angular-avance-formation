@@ -4,6 +4,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Observable, of } from 'rxjs'
 import { UserService } from 'src/app/core/services/user.service'
 import { User } from 'src/app/core/user.interface'
+import { UserCardComponent } from './user-card/user-card.component'
+import { NO_ERRORS_SCHEMA } from '@angular/core'
+import { By } from '@angular/platform-browser'
 
 /*
 class UserServiceMock extends UserService {
@@ -27,10 +30,13 @@ describe('Tester UsersComponent', () => {
     let httpMock: HttpTestingController
     let userService: UserService
 
+    const NAME = 'ana'
+
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            declarations: [UsersComponent],
+            declarations: [UsersComponent, UserCardComponent],
+           // schemas: [NO_ERRORS_SCHEMA]
             /*providers: [{
                 provide: UserService,
                 useClass: UserServiceMock
@@ -57,15 +63,19 @@ describe('Tester UsersComponent', () => {
                 id: 1,
                 email: 'ana@gmail.com',
                 username: 'ana',
-                name: 'ana'
+                name: NAME
             }
         ])
 
         fixture.detectChanges() // appliquer le tableau users au DOM
         
-        const articles = tpl.querySelectorAll('article')
+        const articles = tpl.querySelectorAll('app-user-card')
         expect(component.users.length).toBeGreaterThan(0)
         expect(articles.length).toBe(component.users.length)
+
+        // test intégration
+        const cardComponent = fixture.debugElement.query(By.directive(UserCardComponent))
+        expect(cardComponent.componentInstance.user.name).toBe(NAME)
     })
 
     afterEach(() => {
