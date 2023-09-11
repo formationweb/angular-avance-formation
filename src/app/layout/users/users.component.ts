@@ -1,13 +1,20 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
+import { UserService } from 'src/app/core/services/user.service';
+import { User } from 'src/app/core/user.interface';
 
 @Component({
     selector: 'app-users',
     templateUrl: 'users.component.html'
 })
 export class UsersComponent implements OnInit {
-    constructor() { }
+    users: User[] = []
+    // private userService: UserService = inject(UserService)
 
-    ngOnInit() { 
-        
+    constructor(private userService: UserService) { }
+
+    ngOnInit() {
+        this.userService.getAll().subscribe((users: User[]) => {
+            this.users = users
+        })
     }
 }
