@@ -1,9 +1,18 @@
 <form (ngSubmit)="login()" [formGroup]="form">
+
+    <div *ngIf="propEmail.hasError('required')">
+        L'email obligatoire
+    </div>
+
+    <div *ngIf="propEmail.hasError('emailExists')">
+        L'email existe déjà !
+    </div>
+
     <label>Email</label>
     <input type="text" [formControl]="propEmail" />
     
     <label>Password</label>
     <input type="password" [formControl]="propPass" />
 
-    <button>Se connecter</button>
+    <button [disabled]="form.invalid">Se connecter</button>
 </form>
