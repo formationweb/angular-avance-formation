@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, lastValueFrom, map } from "rxjs";
+import { BehaviorSubject, Observable, lastValueFrom, map, tap } from "rxjs";
 import { User } from "../user.interface";
 import { AbstractControl } from "@angular/forms";
 import { BASE_URL } from "../constants/injection";
@@ -10,9 +10,11 @@ import { BASE_URL } from "../constants/injection";
 })
 export class UserService {
     private _search$: BehaviorSubject<string> = new BehaviorSubject('')
+    private _users$: BehaviorSubject<User[]> = new BehaviorSubject([] as User[])
 
     readonly url: string = '/users'
     readonly search$: Observable<string> = this._search$.asObservable()
+    readonly users$: Observable<User[]> = this._users$.asObservable()
 
     constructor(
         private http: HttpClient,
@@ -27,6 +29,11 @@ export class UserService {
 
     getAll(): Observable<User[]> {
         return this.http.get<User[]>(this.url)
+            .pipe(
+                tap((users: User[]) => {
+                    this._users$.next(users)
+                })
+            )
     }
 
    /* checkEmail(input: AbstractControl<string>): Observable<{ emailExists: boolean } | null> {

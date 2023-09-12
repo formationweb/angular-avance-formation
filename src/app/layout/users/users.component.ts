@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core'
+import { Observable } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/user.interface';
 
@@ -7,7 +8,7 @@ import { User } from 'src/app/core/user.interface';
     templateUrl: 'users.component.html'
 })
 export class UsersComponent implements OnInit {
-    users: User[] = []
+    users$: Observable<User[]> = this.userService.users$
     // private userService: UserService = inject(UserService)
 
     constructor(private userService: UserService) { }
@@ -16,8 +17,6 @@ export class UsersComponent implements OnInit {
         this.userService.search$.subscribe((str) => {
             console.log(str)
         })
-        this.userService.getAll().subscribe((users: User[]) => {
-            this.users = users
-        })
+        this.userService.getAll().subscribe()
     }
 }
