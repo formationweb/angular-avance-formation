@@ -1,11 +1,7 @@
-import { AsyncSubject, BehaviorSubject, Observable, ReplaySubject, Subject } from "rxjs";
+import { AsyncSubject, BehaviorSubject, Observable, ReplaySubject, Subject, interval } from "rxjs";
 
-const ob$ = new AsyncSubject()
+const ob$ = interval(1000)
 
-ob$.next('a')
-ob$.next('b')
+const subscription = ob$.subscribe(console.log)
 
-ob$.subscribe(console.log)
-
-ob$.next('c')
-ob$.complete()
+subscription.unsubscribe()

@@ -3,7 +3,9 @@
     <li>
       <strong>{{ title$ | async }}</strong>
       <button (click)="changeTitle()">Modifier titre</button>
+      <button routerLink="/login">Se connecter</button>
     </li>
+    <li>{{ navbarConfig | json }}</li>
   </ul>
   <ul>
     <li>

@@ -5,6 +5,10 @@ import { LoginComponent } from './login/login.component';
 const routes: Routes = [{
   path: 'login',
   component: LoginComponent
+}, {
+  path: '',
+  loadChildren: () => import('./layout/layout.module')
+      .then(modules => modules.LayoutModule)
 }]
 
 @NgModule({
