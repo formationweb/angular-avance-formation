@@ -58,6 +58,21 @@ export class UserService {
             )
     }
 
+    delete(id: number): Observable<void> {
+        return this.http.delete<void>(this.url + '/' + id)
+            .pipe(
+                tap(() => {
+                    const users = this._users$.value.filter(user => user.id != id)
+                    this._users$.next(users)
+                    this.notification.success('Utilisateur supprimé !')
+                }),
+                catchError((err) => {
+                    this.notification.error('Erreur')
+                    throw err
+                })
+            )
+    }
+
    /* checkEmail(input: AbstractControl<string>): Observable<{ emailExists: boolean } | null> {
         return this.http.get<User>(this.url + '/1')
             .pipe(
