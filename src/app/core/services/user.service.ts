@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
-import { Observable, lastValueFrom, map } from "rxjs";
+import { BehaviorSubject, Observable, lastValueFrom, map } from "rxjs";
 import { User } from "../user.interface";
 import { AbstractControl } from "@angular/forms";
 import { BASE_URL } from "../constants/injection";
@@ -9,13 +9,20 @@ import { BASE_URL } from "../constants/injection";
     providedIn: 'root'
 })
 export class UserService {
+    private _search$: BehaviorSubject<string> = new BehaviorSubject('')
+
     readonly url: string = '/users'
+    readonly search$: Observable<string> = this._search$.asObservable()
 
     constructor(
         private http: HttpClient,
         @Inject(BASE_URL) private baseUrl: string
     ) {
         this.url = this.baseUrl + this.url
+    }
+
+    setSearch(val: string) {
+        this._search$.next(val)
     }
 
     getAll(): Observable<User[]> {
@@ -31,9 +38,9 @@ export class UserService {
 
     */
 
-    checkEmail(input: AbstractControl<string>): Promise<{ emailExists: boolean } | null> {
+    async checkEmail(input: AbstractControl<string>): Promise<{ emailExists: boolean } | null> {
         // this.http.get<User>(this.url + '/1').toPromise()
-        return lastValueFrom(this.http.get<User>(this.url + '/1'))
-            .then(user => input.value == user.email ? { emailExists: true } : null)
+        const user = await lastValueFrom(this.http.get<User>(this.url + '/1'))
+        return input.value == user.email ? { emailExists: true } : null    
     }
 }

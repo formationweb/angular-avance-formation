@@ -1,5 +1,11 @@
-import { Observable, of } from "rxjs";
+import { AsyncSubject, BehaviorSubject, Observable, ReplaySubject, Subject } from "rxjs";
 
-const ob$ = of(1, 2, 3)
+const ob$ = new AsyncSubject()
 
-ob$.subscribe()
+ob$.next('a')
+ob$.next('b')
+
+ob$.subscribe(console.log)
+
+ob$.next('c')
+ob$.complete()
