@@ -1,9 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, lastValueFrom, map, tap } from "rxjs";
+import { BehaviorSubject, Observable, catchError, lastValueFrom, map, tap } from "rxjs";
 import { User } from "../user.interface";
 import { AbstractControl } from "@angular/forms";
 import { BASE_URL } from "../constants/injection";
+import { NotificationService } from "./notification.service";
+
+type UserPayload = Omit<User, 'id'>
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +21,8 @@ export class UserService {
 
     constructor(
         private http: HttpClient,
-        @Inject(BASE_URL) private baseUrl: string
+        @Inject(BASE_URL) private baseUrl: string,
+        private notification: NotificationService
     ) {
         this.url = this.baseUrl + this.url
     }
@@ -31,8 +35,25 @@ export class UserService {
         return this.http.get<User[]>(this.url)
             .pipe(
                 tap((users: User[]) => {
-                    const value = this._users$.value 
                     this._users$.next(users)
+                })
+            )
+    }
+
+    create(payload: UserPayload): Observable<User> {
+        return this.http.post<User>(this.url, payload)
+            .pipe(
+                tap((userCreated: User) => {
+                    const users = this._users$.value 
+                    this._users$.next([
+                        ...users,
+                        userCreated
+                    ])
+                    this.notification.success('Utilisateur créé !')
+                }),
+                catchError((err) => {
+                    this.notification.error('Erreur')
+                    throw err
                 })
             )
     }
