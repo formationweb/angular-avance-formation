@@ -31,6 +31,7 @@ export class UserService {
         return this.http.get<User[]>(this.url)
             .pipe(
                 tap((users: User[]) => {
+                    const value = this._users$.value 
                     this._users$.next(users)
                 })
             )

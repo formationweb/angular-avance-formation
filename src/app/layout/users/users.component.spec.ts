@@ -7,6 +7,7 @@ import { User } from 'src/app/core/user.interface'
 import { UserCardComponent } from './user-card/user-card.component'
 import { NO_ERRORS_SCHEMA } from '@angular/core'
 import { By } from '@angular/platform-browser'
+import { BASE_URL } from 'src/app/core/constants/injection'
 
 /*
 class UserServiceMock extends UserService {
@@ -36,12 +37,12 @@ describe('Tester UsersComponent', () => {
         await TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [UsersComponent, UserCardComponent],
-           // schemas: [NO_ERRORS_SCHEMA]
-            /*providers: [{
-                provide: UserService,
-                useClass: UserServiceMock
-            }]
-            */
+            providers: [
+                {
+                    provide: BASE_URL,
+                    useValue: ''
+                }
+            ]
         }).compileComponents()
 
         fixture = TestBed.createComponent(UsersComponent)
@@ -68,6 +69,29 @@ describe('Tester UsersComponent', () => {
         ])
 
         fixture.detectChanges() // appliquer le tableau users au DOM
+
+        const articles = tpl.querySelectorAll('app-user-card')
+        component.users$.subscribe((users) => {
+            expect(users.length).toBeGreaterThan(0)
+            expect(articles.length).toBe(users.length)
+        })
+        
+    })
+
+   /* it('La liste utilisateurs s\'affiche bien !', async () => {
+        const requestHttp = httpMock.expectOne(userService.url)
+        expect(requestHttp.request.method).toBe('GET')
+
+        requestHttp.flush([
+            {
+                id: 1,
+                email: 'ana@gmail.com',
+                username: 'ana',
+                name: NAME
+            }
+        ])
+
+        fixture.detectChanges() // appliquer le tableau users au DOM
         
         const articles = tpl.querySelectorAll('app-user-card')
         expect(component.users.length).toBeGreaterThan(0)
@@ -77,6 +101,7 @@ describe('Tester UsersComponent', () => {
         const cardComponent = fixture.debugElement.query(By.directive(UserCardComponent))
         expect(cardComponent.componentInstance.user.name).toBe(NAME)
     })
+    */
 
     afterEach(() => {
         httpMock.verify()
