@@ -31,8 +31,8 @@ export class UserService {
         this._search$.next(val)
     }
 
-    getAll(): Observable<User[]> {
-        return this.http.get<User[]>(this.url)
+    getAll(sort?: string): Observable<User[]> {
+        return this.http.get<User[]>(this.url + (sort ? '?_sort=' + sort : ''))
     }
 
     create(payload: UserPayload): Observable<User> {

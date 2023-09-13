@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit, OnDestroy {
             console.log(str)
         })
        
-        this.store.dispatch(userGetAll())
+        this.store.dispatch(userGetAll({ sort: 'name' }))
 
         /*this.subscription = interval(1000).subscribe((nb) => {
             console.log(nb)

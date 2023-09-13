@@ -12,7 +12,9 @@ export enum UserActions {
     }
 }*/
 
-export const userGetAll = createAction(UserActions.GetAll)
+export const userGetAll = createAction(UserActions.GetAll, props<{
+    sort?: string
+}>())
 export const userGetAllSuccess = createAction(UserActions.GetAllSuccess, props<{
     users: User[]
 }>())

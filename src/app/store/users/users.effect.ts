@@ -12,8 +12,8 @@ export class UserEffect {
     loadUsers$: Observable<Action> = createEffect(() => {
         return this.actions$.pipe(
             ofType(userGetAll),
-            switchMap(() => {
-                return this.userService.getAll()
+            switchMap((action) => {
+                return this.userService.getAll(action.sort)
             }),
             map(users => userGetAllSuccess({ users }))
         )
