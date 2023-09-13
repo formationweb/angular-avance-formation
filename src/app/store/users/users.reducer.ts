@@ -1,5 +1,5 @@
 import { User } from "src/app/core/user.interface"
-import { UserActions, userGetAll, userGetAllSuccess } from "./users.action"
+import { UserActions, userCreateSuccessAction, userGetAll, userGetAllSuccess } from "./users.action"
 import { createReducer, on } from "@ngrx/store"
 
 export interface UserState {
@@ -36,6 +36,12 @@ export const userReducer = createReducer(
             ...state,
             usersList: action.users,
             loading: true
+        }
+    }),
+    on(userCreateSuccessAction,  (state: UserState, action: { user: User }): UserState => {
+        return {
+            ...state,
+            usersList: [...state.usersList, action.user]
         }
     })
 )

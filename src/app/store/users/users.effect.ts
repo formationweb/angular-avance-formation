@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Action } from "@ngrx/store";
-import { Observable, map, switchMap } from "rxjs";
+import { Observable, catchError, map, switchMap, tap } from "rxjs";
 import { UserService } from "src/app/core/services/user.service";
-import { userGetAll, userGetAllSuccess } from "./users.action";
+import { userCreateAction, userCreateSuccessAction, userGetAll, userGetAllSuccess } from "./users.action";
+import { NotificationService } from "src/app/core/services/notification.service";
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +20,24 @@ export class UserEffect {
         )
     })
 
+    createUser$: Observable<Action> = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(userCreateAction),
+            switchMap(action => this.userService.create(action.form)),
+            map(user => userCreateSuccessAction({ user })),
+            tap(() => {
+                this.notification.success('Utilisateur créé')
+            }),
+            catchError((err) => {
+                this.notification.error('Erreur')
+                throw err
+            })
+        )
+    })
+
     constructor(
         private userService: UserService,
-        private actions$: Actions
+        private actions$: Actions,
+        private notification: NotificationService
     ) {}
 }
