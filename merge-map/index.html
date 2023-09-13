@@ -24,7 +24,6 @@
 </script>
 
 <script type="module">
-  // // Premièrement, nous importons les bonnes fonctions et classes de rxjs.
   import { mergeMap, switchMap, take, fromEvent, interval, of } from 'rxjs';
 
   const startMergeBtn = document.getElementById('startMerge');
@@ -77,32 +76,5 @@
 
   mergeMapFlow$.subscribe();
   switchMapFlow$.subscribe();
-
-  // function fakeHttpRequest(value) {
-  //   return of(`Réponse pour ${value}`).pipe(delay(200));
-  // }
-
-  // const mergeMapButton = document.getElementById('mergeMap');
-  // const switchMapButton = document.getElementById('switchMap');
-
-  // // Exemple avec mergeMap
-  // const mergeMapExample$ = fromEvent(mergeMapButton, 'click').pipe(
-  //   mapTo('MergeMap'),
-  //   mergeMap(value => fakeHttpRequest(value))
-  // );
-
-  // mergeMapExample$.subscribe(response => {
-  //   console.log('mergeMap:', response);
-  // });
-
-  // // Exemple avec switchMap
-  // const switchMapExample$ = fromEvent(switchMapButton, 'click').pipe(
-  //   mapTo('SwitchMap'),
-  //   switchMap(value => fakeHttpRequest(value))
-  // );
-
-  // switchMapExample$.subscribe(response => {
-  //   console.log('switchMap:', response);
-  // });
 
 </script>
