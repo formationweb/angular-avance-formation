@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription, interval } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/user.interface';
-import { GetUsersAction } from 'src/app/store/users.action';
+import { CreateUserAction, DeleteUserAction, GetUsersAction } from 'src/app/store/users.action';
 import { UserState } from 'src/app/store/users.state';
 
 @Component({
@@ -34,11 +34,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     createUser(form: NgForm) {
-        this.userService.create(form.value).subscribe()
+        this.store.dispatch(new CreateUserAction(form.value))
     }
 
     deleteUtilisateur(id: number) {
-        this.userService.delete(id).subscribe()
+        this.store.dispatch(new DeleteUserAction(id))
     }
 
     ngOnDestroy(): void {

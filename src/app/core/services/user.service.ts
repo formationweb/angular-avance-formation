@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, catchError, lastValueFrom, map, tap } from "rxjs";
+import { BehaviorSubject, Observable, catchError, lastValueFrom, map, switchMap, tap, timer } from "rxjs";
 import { User } from "../user.interface";
 import { AbstractControl } from "@angular/forms";
 import { BASE_URL } from "../constants/injection";
@@ -43,18 +43,17 @@ export class UserService {
         return this.http.delete<void>(this.url + '/' + id)
     }
 
-   /* checkEmail(input: AbstractControl<string>): Observable<{ emailExists: boolean } | null> {
-        return this.http.get<User>(this.url + '/1')
+   checkEmail(input: AbstractControl<string>): Observable<{ emailExists: boolean } | null> {
+        return timer(500)
             .pipe(
+                switchMap(() => this.http.get<User>(this.url + '/1')),
                 map(user => input.value == user.email ? { emailExists: true } : null)
             )
     }
 
-    */
-
-    async checkEmail(input: AbstractControl<string>): Promise<{ emailExists: boolean } | null> {
+    /*async checkEmail(input: AbstractControl<string>): Promise<{ emailExists: boolean } | null> {
         // this.http.get<User>(this.url + '/1').toPromise()
         const user = await lastValueFrom(this.http.get<User>(this.url + '/1'))
         return input.value == user.email ? { emailExists: true } : null    
-    }
+    }*/
 }
