@@ -1,10 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, catchError, lastValueFrom, map, tap } from "rxjs";
+import { BehaviorSubject, Observable, catchError, combineLatest, lastValueFrom, map, tap } from "rxjs";
 import { User } from "../user.interface";
 import { AbstractControl } from "@angular/forms";
 import { BASE_URL } from "../constants/injection";
 import { NotificationService } from "./notification.service";
+import { Store } from "@ngrx/store";
+import { UserState } from "src/app/store/users/users.reducer";
+import { selectUsersList } from "src/app/store/users/users.selector";
 
 type UserPayload = Omit<User, 'id'>
 
@@ -17,12 +20,19 @@ export class UserService {
 
     readonly url: string = '/users'
     readonly search$: Observable<string> = this._search$.asObservable()
-    readonly users$: Observable<User[]> = this._users$.asObservable()
+    //readonly users$: Observable<User[]> = this._users$.asObservable()
+    readonly usersFiltered$: Observable<User[]> = 
+        combineLatest([ this.search$, this.store.select(selectUsersList) ])
+        .pipe(
+            map(([ str, users ]) => users.filter(user => user.name.startsWith(str)))
+        )
+
 
     constructor(
         private http: HttpClient,
         @Inject(BASE_URL) private baseUrl: string,
-        private notification: NotificationService
+        private notification: NotificationService,
+        private store: Store<UserState>
     ) {
         this.url = this.baseUrl + this.url
     }
