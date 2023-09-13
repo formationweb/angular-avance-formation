@@ -1,26 +1,35 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core'
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription, interval } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/user.interface';
+import { IStore } from 'src/app/store/store';
+import { UserActions, userGetAll } from 'src/app/store/users/users.action';
+import { UserState } from 'src/app/store/users/users.reducer';
+import { selectUsersList } from 'src/app/store/users/users.selector';
 
 @Component({
     selector: 'app-users',
     templateUrl: 'users.component.html'
 })
 export class UsersComponent implements OnInit, OnDestroy {
-    users$: Observable<User[]> = this.userService.users$
+    users$: Observable<User[]> = this.store.select(selectUsersList)
     subscription!: Subscription
     color: string = 'red'
     // private userService: UserService = inject(UserService)
 
-    constructor(private userService: UserService) { }
+    constructor(
+        private userService: UserService,
+        private store: Store<IStore>
+    ) { }
 
     ngOnInit() {
         this.userService.search$.subscribe((str) => {
             console.log(str)
         })
-        this.userService.getAll().subscribe()
+       
+        this.store.dispatch(userGetAll())
 
         /*this.subscription = interval(1000).subscribe((nb) => {
             console.log(nb)
