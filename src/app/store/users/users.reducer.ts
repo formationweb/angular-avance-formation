@@ -1,5 +1,5 @@
 import { User } from "src/app/core/user.interface"
-import { UserActions, userGetAll } from "./users.action"
+import { UserActions, userGetAll, userGetAllSuccess } from "./users.action"
 import { createReducer, on } from "@ngrx/store"
 
 export interface UserState {
@@ -30,18 +30,12 @@ const initialState: UserState = {
 }*/
 
 export const userReducer = createReducer(
-        initialState,
-        on(userGetAll, (state: UserState, action: { type: string }): UserState => {
-            return {
-                usersList: [
-                    {
-                        id: 1,
-                        name: 'ana',
-                        username: 'ana',
-                        email: 'ana@gmail.com'
-                    }
-                ],
-                loading: true
-            }
-        })
+    initialState,
+    on(userGetAllSuccess, (state: UserState, action: { users: User[] }): UserState => {
+        return {
+            ...state,
+            usersList: action.users,
+            loading: true
+        }
+    })
 )

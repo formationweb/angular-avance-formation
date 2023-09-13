@@ -1,7 +1,9 @@
-import { createAction } from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
+import { User } from "src/app/core/user.interface";
 
 export enum UserActions {
-    GetAll = '[User] Get All'
+    GetAll = '[User] Get All',
+    GetAllSuccess = '[User] Get All Success'
 }
 
 /*export const userGetAll = function() {
@@ -11,3 +13,7 @@ export enum UserActions {
 }*/
 
 export const userGetAll = createAction(UserActions.GetAll)
+export const userGetAllSuccess = createAction(UserActions.GetAllSuccess, props<{
+    users: User[]
+}>())
+
