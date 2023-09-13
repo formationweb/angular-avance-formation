@@ -1,0 +1,108 @@
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="container mx-auto mt-10">
+  <div class="flex justify-items-center items-center w-full">
+    <button id="startMerge"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Démarrer
+      le flux avec mergeMap</button>
+    <button id="startSwitch"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Démarrer
+      le flux avec switchMap</button>
+
+  </div>
+  <div id="dataFlow" class="max-h-96 overflow-auto mt-10"></div>
+
+</div>
+
+
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs@7.8.1/+esm"
+  }
+}
+</script>
+
+<script type="module">
+  // // Premièrement, nous importons les bonnes fonctions et classes de rxjs.
+  import { mergeMap, switchMap, take, fromEvent, interval, of } from 'rxjs';
+
+  const startMergeBtn = document.getElementById('startMerge');
+  const startSwitchBtn = document.getElementById('startSwitch');
+  const dataFlowDiv = document.getElementById('dataFlow');
+
+  let colorIndex = 0
+  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown', 'black', 'white']
+
+  function scrollToBottom(element) {
+    element.scrollTop = element.scrollHeight;
+  }
+
+  function createDataDiv(content, colorIndex) {
+    const div = document.createElement('div');
+    div.classList.add('p-2', 'm-2', `bg-${colors[colorIndex]}-200`, 'rounded-lg');
+    div.innerText = content;
+    return div;
+  }
+
+  const mergeMapFlow$ = fromEvent(startMergeBtn, 'click').pipe(
+    mergeMap(() => {
+      let _colorIndex = colorIndex
+      colorIndex++
+      return interval(500).pipe(
+        mergeMap(val => {
+          const div = createDataDiv(`mergeMap Data ${val}`, _colorIndex);
+          dataFlowDiv.appendChild(div);
+          scrollToBottom(dataFlowDiv);
+          return of(div);
+        })
+      );
+    })
+  );
+
+  const switchMapFlow$ = fromEvent(startSwitchBtn, 'click').pipe(
+    switchMap(() => {
+      let _colorIndex = colorIndex
+      colorIndex++
+      return interval(500).pipe(
+        switchMap(val => {
+          const div = createDataDiv(`switchMap Data ${val}`, colorIndex);
+          dataFlowDiv.appendChild(div);
+          scrollToBottom(dataFlowDiv);
+          return of(div);
+        })
+      );
+    })
+  );
+
+  mergeMapFlow$.subscribe();
+  switchMapFlow$.subscribe();
+
+  // function fakeHttpRequest(value) {
+  //   return of(`Réponse pour ${value}`).pipe(delay(200));
+  // }
+
+  // const mergeMapButton = document.getElementById('mergeMap');
+  // const switchMapButton = document.getElementById('switchMap');
+
+  // // Exemple avec mergeMap
+  // const mergeMapExample$ = fromEvent(mergeMapButton, 'click').pipe(
+  //   mapTo('MergeMap'),
+  //   mergeMap(value => fakeHttpRequest(value))
+  // );
+
+  // mergeMapExample$.subscribe(response => {
+  //   console.log('mergeMap:', response);
+  // });
+
+  // // Exemple avec switchMap
+  // const switchMapExample$ = fromEvent(switchMapButton, 'click').pipe(
+  //   mapTo('SwitchMap'),
+  //   switchMap(value => fakeHttpRequest(value))
+  // );
+
+  // switchMapExample$.subscribe(response => {
+  //   console.log('switchMap:', response);
+  // });
+
+</script>
