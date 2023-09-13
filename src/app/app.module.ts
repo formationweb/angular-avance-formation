@@ -5,6 +5,9 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { LoginComponent } from './login/login.component';
 import { InterceptorService } from './core/services/interceptor.service';
+import { NgxsModule } from '@ngxs/store'
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { UserState } from './store/users.state';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,9 @@ import { InterceptorService } from './core/services/interceptor.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    LoginComponent
+    LoginComponent,
+    NgxsModule.forRoot([ UserState ]),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
