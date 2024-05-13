@@ -1,1 +1,6 @@
 <h1>{{ title }}</h1>
+
+<form (ngSubmit)="doSearch()" [formGroup]="form">
+    <input type="text"  [formControl]="propSearch">
+    <button>Rechercher</button>
+</form>
