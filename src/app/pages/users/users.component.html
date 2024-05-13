@@ -2,9 +2,6 @@
 
 <h1>Utilisateurs</h1>
 
-@for (user of users ; track user.id) {
-    <article class="user-card">
-        <p>{{ user.name }}</p>
-        <p>{{ user.email }}</p>
-    </article>
+@for (u of users ; track u.id) {
+    <app-user-card [user]="u" />
 }
