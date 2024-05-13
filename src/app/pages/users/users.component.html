@@ -1,1 +1,10 @@
 <app-navbar />
+
+<h1>Utilisateurs</h1>
+
+@for (user of users ; track user.id) {
+    <div>
+        <p>{{ user.name }}</p>
+        <p>{{ user.email }}</p>
+    </div>
+}
