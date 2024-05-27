@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
+  private userService = inject(UserService)
   propSearch: FormControl<string> = new FormControl()
   form = new FormGroup({
     search: this.propSearch
@@ -18,17 +19,9 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
       this.propSearch.valueChanges
-      .pipe(
-          filter(str => str.length > 3 ),
-          map((str) => str.toUpperCase()),
-          debounceTime(500),
-          distinctUntilChanged()
-          // tap((str) => {
-          //   console.log('-->debug', str)
-          // })
-      )
+      
       .subscribe((str) => {
-        console.log(str)
+        this.userService.setSearch(str)
       })
   }
 

@@ -2,6 +2,8 @@
 
 <h1>Utilisateurs</h1>
 
+<div>La recherche est : {{ search$ | async }}</div>
+
 @for (u of users ; track u.id) {
     <app-user-card [user]="u" />
 }
