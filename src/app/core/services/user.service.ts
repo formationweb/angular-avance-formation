@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import {
   BehaviorSubject, Observable,
+  catchError,
   debounceTime,
   distinctUntilChanged,
   filter,
@@ -9,6 +10,7 @@ import {
   tap
 } from 'rxjs';
 import { User } from '../interfaces/user.interface';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +18,7 @@ import { User } from '../interfaces/user.interface';
 export class UserService {
   readonly url = 'https://jsonplaceholder.typicode.com/users';
   private http = inject(HttpClient);
+  private notification = inject(NotificationService)
   private _search$: BehaviorSubject<string> = new BehaviorSubject('');
   private _users$: BehaviorSubject<User[]> = new BehaviorSubject([] as User[]) // state
 
@@ -38,6 +41,21 @@ export class UserService {
       .pipe(
         tap((users) => {
           this._users$.next(users) // mutation
+        })
+      )
+  }
+
+  create(payload: { name: string, email: string }): Observable<User> {
+    return this.http.post<User>(this.url, payload)
+      .pipe(
+        tap((user) => {
+          const users = this._users$.value
+          this._users$.next([...users, user])
+          this.notification.success('Utilisateur bien créé !')
+        }),
+        catchError((err) => {
+          this.notification.error('Erreur')
+          throw err
         })
       )
   }

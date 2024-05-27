@@ -4,6 +4,16 @@
 
 <div>La recherche est : {{ search$ | async }}</div>
 
+<form #myform="ngForm" (ngSubmit)="createUser(myform)">
+    <label>Email</label>
+    <input type="text" name="email" ngModel>
+
+    <label>Name</label>
+    <input type="text" name="name" ngModel>
+
+    <button>Créer</button>
+</form>
+
 @for (u of users$ | async ; track u.id) {
     <app-user-card [user]="u" />
 }
