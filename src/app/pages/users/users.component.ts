@@ -1,8 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { User } from '../../core/interfaces/user.interface';
 import { UserService } from '../../core/services/user.service';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
@@ -16,8 +15,18 @@ import { UserCardComponent } from '../../features/user-card/user-card.component'
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService);
-  users$: Observable<User[]> = this.userService.users$;
+  users = this.userService.users
+  nbUsersByName = this.userService.nbUsersByName
   search$: Observable<string> = this.userService.search$;
+
+  constructor() {
+    effect(() => {
+      const users = this.users()
+      if (users.length > 1000) {
+        console.log('Trop d\'utilisateurs')
+      }
+    })
+  }
 
   ngOnInit() {
     this.userService.getAll().subscribe(); // action

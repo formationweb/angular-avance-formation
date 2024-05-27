@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import {
   BehaviorSubject, Observable,
   catchError,
@@ -20,7 +20,13 @@ export class UserService {
   private http = inject(HttpClient);
   private notification = inject(NotificationService)
   private _search$: BehaviorSubject<string> = new BehaviorSubject('');
-  private _users$: BehaviorSubject<User[]> = new BehaviorSubject([] as User[]) // state
+ 
+  users = signal<User[]>([])
+  nbUsersByName = computed<number>(() => {
+    return this.users()
+      .filter(users => users.name.startsWith('Leanne'))
+      .length
+  })
 
   search$: Observable<string> = this._search$.asObservable().pipe(
     filter((str) => str.length > 3),
@@ -28,7 +34,6 @@ export class UserService {
     debounceTime(500),
     distinctUntilChanged()
   );
-  users$: Observable<User[]> = this._users$.asObservable() // getter or selector
 
   setSearch(str: string) {
     this._search$.next(str);
@@ -40,7 +45,7 @@ export class UserService {
     return this.http.get<User[]>(this.url)
       .pipe(
         tap((users) => {
-          this._users$.next(users) // mutation
+          this.users.set(users)
         })
       )
   }
@@ -49,8 +54,7 @@ export class UserService {
     return this.http.post<User>(this.url, payload)
       .pipe(
         tap((user) => {
-          const users = this._users$.value
-          this._users$.next([...users, user])
+          this.users.set([...this.users(), user])
           this.notification.success('Utilisateur bien créé !')
         }),
         catchError((err) => {

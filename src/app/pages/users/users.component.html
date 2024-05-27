@@ -1,6 +1,6 @@
 <app-navbar />
 
-<h1>Utilisateurs</h1>
+<h1>{{ nbUsersByName() }} Utilisateurs qui commencent par "Leanne"</h1>
 
 <div>La recherche est : {{ search$ | async }}</div>
 
@@ -14,6 +14,6 @@
     <button>Créer</button>
 </form>
 
-@for (u of users$ | async ; track u.id) {
+@for (u of users() ; track u.id) {
     <app-user-card [user]="u" />
 }
