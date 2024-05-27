@@ -6,11 +6,12 @@ import { User } from '../../core/interfaces/user.interface';
 import { UserService } from '../../core/services/user.service';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
+import { ColorComponent } from './../../features/color/color.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NavbarComponent, UserCardComponent, AsyncPipe, FormsModule],
+  imports: [NavbarComponent, UserCardComponent, AsyncPipe, FormsModule, ColorComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
@@ -18,6 +19,7 @@ export class UsersComponent implements OnInit {
   private userService = inject(UserService);
   users$: Observable<User[]> = this.userService.users$;
   search$: Observable<string> = this.userService.search$;
+  colorSelected = ''
 
   ngOnInit() {
     this.userService.getAll().subscribe(); // action

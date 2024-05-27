@@ -4,6 +4,8 @@
 
 <div>La recherche est : {{ search$ | async }}</div>
 
+<p>Choisir une couleur:</p> <app-color [(ngModel)]="colorSelected" />
+
 <form #myform="ngForm" (ngSubmit)="createUser(myform)">
     <label>Email</label>
     <input type="text" name="email" ngModel>
