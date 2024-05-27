@@ -6,13 +6,14 @@ type LoginResponse = {
   token: string;
 };
 
+const KEY = 'angular'
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   readonly url = 'https://reqres.in/api/login';
   private http = inject(HttpClient);
-  token = ''
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.url, { email, password })
@@ -21,5 +22,13 @@ export class AuthService {
           this.token = res.token
         })
       )
+  }
+
+  set token(val: string) {
+    localStorage.setItem(KEY, val)
+  }
+
+  get token() {
+    return localStorage.getItem(KEY) as string
   }
 }
