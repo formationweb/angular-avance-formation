@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { emailExistsValidator } from '../../core/validators/email-exists.validator';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,11 @@ export class LoginComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  propEmail = new FormControl<string>('');
+  propEmail = new FormControl<string>('', [
+    Validators.required
+  ], [
+    emailExistsValidator()
+  ]);
   propPass = new FormControl<string>('');
   form = new FormGroup({
     email: this.propEmail,

@@ -1,4 +1,11 @@
 <form (ngSubmit)="login()" [formGroup]="form">
+
+    @if (form.invalid) {
+        @if (propEmail.hasError('emailExists')) {
+            <div>Email existe déjà</div>
+        }
+    }
+
     <label>Email</label>
     <input type="text" [formControl]="propEmail">
 
