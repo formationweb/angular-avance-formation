@@ -15,12 +15,10 @@ import { UserCardComponent } from '../../features/user-card/user-card.component'
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService);
-  users: User[] = [];
+  users$: Observable<User[]> = this.userService.users$
   search$: Observable<string> = this.userService.search$
 
   ngOnInit() {
-    this.userService.getAll().subscribe((users: User[]) => {
-      this.users = users;
-    });
+    this.userService.getAll().subscribe(); // action
   }
 }
