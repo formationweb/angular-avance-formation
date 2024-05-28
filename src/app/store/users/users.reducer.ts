@@ -1,6 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from '../../core/interfaces/user.interface';
-import { userGetAllSuccessAction } from './users.action';
+import {
+  userCreateSuccessAction,
+  userGetAllSuccessAction,
+} from './users.action';
 
 export interface UsersState {
   usersList: User[];
@@ -37,10 +40,17 @@ export const usersReducer = createReducer(
     (currentState: UsersState, action: { users: User[] }): UsersState => {
       return {
         ...currentState,
-        usersList: action.users
+        usersList: action.users,
       };
     }
   ),
-  /*on(createUser,  (currentState: UsersState, action: { type: string }): UsersState => {
-    })*/
+  on(
+    userCreateSuccessAction,
+    (currentState: UsersState, action: { user: User }): UsersState => {
+      return {
+        ...currentState,
+        usersList: [...currentState.usersList, action.user]
+      }
+    }
+  )
 );

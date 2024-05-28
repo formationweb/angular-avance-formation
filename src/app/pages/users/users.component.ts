@@ -8,7 +8,7 @@ import { UserService } from '../../core/services/user.service';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
 import { IStore } from '../../store/store.interface';
-import { userGetAllAction } from '../../store/users/users.action';
+import { userCreateAction, userGetAllAction } from '../../store/users/users.action';
 import { selectUsersList } from '../../store/users/users.selector';
 import { ColorComponent } from './../../features/color/color.component';
 
@@ -33,7 +33,9 @@ export class UsersComponent implements OnInit {
   }
 
   createUser(form: NgForm) {
-   
+    this.store.dispatch(userCreateAction({
+      form: form.value
+    }))
   }
 
   deleteUser(id: number) {

@@ -1,9 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../../core/interfaces/user.interface';
+import { UserCreatePayload } from '../../core/services/user.service';
 
 export enum UsersAction {
   GetAll = '[Users] Get All',
   GetAllSuccess = '[User] Get All Success',
+  Create = '[User] Create',
+  CreateSuccess = '[User] Create Success'
 }
 
 // export const userGetAllAction = function () {
@@ -24,3 +27,15 @@ export const userGetAllSuccessAction = createAction(
     users: User[];
   }>()
 );
+export const userCreateAction = createAction(
+  UsersAction.Create,
+  props<{
+    form: UserCreatePayload
+  }>()
+)
+export const userCreateSuccessAction = createAction(
+  UsersAction.CreateSuccess,
+  props<{
+    user: User
+  }>()
+)
