@@ -10,6 +10,8 @@ import {
 import { User } from '../interfaces/user.interface';
 import { NotificationService } from './notification.service';
 
+export type UserCreatePayload = { name: string, email: string }
+
 @Injectable({
   providedIn: 'root',
 })
@@ -36,7 +38,7 @@ export class UserService {
     return this.http.get<User[]>(this.url + (sort ? '?_sort=' + sort : ''))
   }
 
-  create(payload: { name: string, email: string }): Observable<User> {
+  create(payload: UserCreatePayload): Observable<User> {
     return this.http.post<User>(this.url, payload)
   }
 
