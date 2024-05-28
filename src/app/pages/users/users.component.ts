@@ -27,7 +27,9 @@ export class UsersComponent implements OnInit {
   colorSelected = ''
 
   ngOnInit() {
-    this.store.dispatch(userGetAllAction())
+    this.store.dispatch(userGetAllAction({
+      sort: 'name'
+    }))
   }
 
   createUser(form: NgForm) {

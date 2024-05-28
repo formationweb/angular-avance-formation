@@ -36,13 +36,8 @@ export class UserService {
 
   // constructor(private http: HttpClient) {}
 
-  getAll(): Observable<User[]> {
-    return this.http.get<User[]>(this.url)
-      .pipe(
-        tap((users) => {
-          this._users$.next(users) // mutation
-        })
-      )
+  getAll(sort?: string): Observable<User[]> {
+    return this.http.get<User[]>(this.url + (sort ? '?_sort=' + sort : ''))
   }
 
   create(payload: { name: string, email: string }): Observable<User> {
