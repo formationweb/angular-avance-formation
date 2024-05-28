@@ -2,7 +2,7 @@
 
 <h1>{{ nbUsersByName() }} Utilisateurs qui commencent par "Leanne"</h1>
 
-<div>La recherche est : {{ search$ | async }}</div>
+<div>La recherche est : {{ search() }}</div>
 
 <form #myform="ngForm" (ngSubmit)="createUser(myform)">
     <label>Email</label>

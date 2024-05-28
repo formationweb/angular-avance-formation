@@ -1,7 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, effect, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { UserService } from '../../core/services/user.service';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
@@ -15,9 +14,9 @@ import { UserCardComponent } from '../../features/user-card/user-card.component'
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService);
-  users = this.userService.users
+  users = this.userService.usersFiltered
   nbUsersByName = this.userService.nbUsersByName
-  search$: Observable<string> = this.userService.search$;
+  search = this.userService.search;
 
   constructor() {
     effect(() => {
