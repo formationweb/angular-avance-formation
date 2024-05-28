@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 type OnChange = (color: string) => void;
 type OnTouched = () => void;
@@ -10,6 +10,13 @@ type OnTouched = () => void;
   imports: [],
   templateUrl: './color.component.html',
   styleUrl: './color.component.css',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ColorComponent),
+      multi: true
+    },
+  ]
 })
 export class ColorComponent implements ControlValueAccessor {
   private _color = '';
