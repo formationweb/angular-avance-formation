@@ -8,37 +8,54 @@ import { UserService } from '../../core/services/user.service';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
 import { IStore } from '../../store/store.interface';
-import { userCreateAction, userGetAllAction } from '../../store/users/users.action';
-import { selectUsersList } from '../../store/users/users.selector';
+import {
+  userCreateAction,
+  userDeleteAction,
+  userGetAllAction,
+} from '../../store/users/users.action';
 import { ColorComponent } from './../../features/color/color.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NavbarComponent, UserCardComponent, AsyncPipe, FormsModule, ColorComponent],
+  imports: [
+    NavbarComponent,
+    UserCardComponent,
+    AsyncPipe,
+    FormsModule,
+    ColorComponent,
+  ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService);
-  private store = inject<Store<IStore>>(Store)
-  users$: Observable<User[]> = this.store.select(selectUsersList);
+  private store = inject<Store<IStore>>(Store);
+  users$: Observable<User[]> = this.userService.usersFiltered$;
   search$: Observable<string> = this.userService.search$;
-  colorSelected = ''
+  colorSelected = '';
 
   ngOnInit() {
-    this.store.dispatch(userGetAllAction({
-      sort: 'name'
-    }))
+    this.store.dispatch(
+      userGetAllAction({
+        sort: 'name',
+      })
+    );
   }
 
   createUser(form: NgForm) {
-    this.store.dispatch(userCreateAction({
-      form: form.value
-    }))
+    this.store.dispatch(
+      userCreateAction({
+        form: form.value,
+      })
+    );
   }
 
   deleteUser(id: number) {
-   
+    this.store.dispatch(
+      userDeleteAction({
+        id,
+      })
+    );
   }
 }

@@ -5,10 +5,12 @@ import { Observable, catchError, map, switchMap, tap } from 'rxjs';
 import { NotificationService } from '../../core/services/notification.service';
 import { UserService } from '../../core/services/user.service';
 import {
-    userCreateAction,
-    userCreateSuccessAction,
-    userGetAllAction,
-    userGetAllSuccessAction,
+  userCreateAction,
+  userCreateSuccessAction,
+  userDeleteAction,
+  userDeleteSuccessAction,
+  userGetAllAction,
+  userGetAllSuccessAction,
 } from './users.action';
 
 @Injectable({
@@ -17,7 +19,7 @@ import {
 export class UsersEffect {
   private userService = inject(UserService);
   private actions$ = inject(Actions);
-  private notification = inject(NotificationService)
+  private notification = inject(NotificationService);
 
   userGetAll$: Observable<Action> = createEffect(() => {
     return this.actions$.pipe(
@@ -36,6 +38,24 @@ export class UsersEffect {
       map((user) => userCreateSuccessAction({ user })),
       tap(() => {
         this.notification.success('Utilisateur bien créé !');
+      }),
+      catchError((err) => {
+        this.notification.error('Erreur');
+        throw err;
+      })
+    );
+  });
+
+  deleteUser$: Observable<Action> = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userDeleteAction),
+      switchMap((action) => {
+        return this.userService
+          .delete(action.id)
+          .pipe(map(() => userDeleteSuccessAction({ id: action.id })));
+      }),
+      tap(() => {
+        this.notification.success('Utilisateur bien supprimé !');
       }),
       catchError((err) => {
         this.notification.error('Erreur');

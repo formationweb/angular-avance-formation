@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   BehaviorSubject, Observable,
-  catchError,
+  combineLatest,
   debounceTime,
   distinctUntilChanged,
-  filter,
-  map,
-  tap
+  map
 } from 'rxjs';
+import { IStore } from '../../store/store.interface';
+import { selectUsersList } from '../../store/users/users.selector';
 import { User } from '../interfaces/user.interface';
-import { NotificationService } from './notification.service';
 
 export type UserCreatePayload = { name: string, email: string }
 
@@ -20,17 +20,24 @@ export type UserCreatePayload = { name: string, email: string }
 export class UserService {
   readonly url = 'https://jsonplaceholder.typicode.com/users';
   private http = inject(HttpClient);
-  private notification = inject(NotificationService)
   private _search$: BehaviorSubject<string> = new BehaviorSubject('');
-  private _users$: BehaviorSubject<User[]> = new BehaviorSubject([] as User[]) // state
+  private store = inject<Store<IStore>>(Store);
 
   search$: Observable<string> = this._search$.asObservable().pipe(
-    filter((str) => str.length > 3),
-    map((str) => str.toUpperCase()),
     debounceTime(500),
     distinctUntilChanged()
   );
-  users$: Observable<User[]> = this._users$.asObservable() // getter or selector
+
+  usersFiltered$: Observable<User[]> = 
+    combineLatest([ this.search$, this.store.select(selectUsersList) ])
+    .pipe(
+      map(([ str, users ]) => {
+        if (!str) {
+          return users
+        }
+        return users.filter(user => user.name.includes(str))
+      })
+    )
 
   setSearch(str: string) {
     this._search$.next(str);
@@ -48,16 +55,5 @@ export class UserService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(this.url + '/' + id)
-      .pipe(
-        tap(() => {
-          const users = this._users$.value.filter(user => user.id != id)
-          this._users$.next(users)
-          this.notification.success('Utilisateur supprimé')
-        }),
-        catchError((err) => {
-          this.notification.error('Erreur')
-          throw err
-        })
-      )
   }
 }

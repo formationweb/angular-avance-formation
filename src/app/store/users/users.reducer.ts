@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { User } from '../../core/interfaces/user.interface';
 import {
   userCreateSuccessAction,
+  userDeleteSuccessAction,
   userGetAllSuccessAction,
 } from './users.action';
 
@@ -50,6 +51,15 @@ export const usersReducer = createReducer(
       return {
         ...currentState,
         usersList: [...currentState.usersList, action.user]
+      }
+    }
+  ),
+  on(
+    userDeleteSuccessAction,
+    (currentState: UsersState, action: { id: number }): UsersState => {
+      return {
+        ...currentState,
+        usersList: currentState.usersList.filter(user => user.id != action.id)
       }
     }
   )

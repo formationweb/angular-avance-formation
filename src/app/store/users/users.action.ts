@@ -6,7 +6,9 @@ export enum UsersAction {
   GetAll = '[Users] Get All',
   GetAllSuccess = '[User] Get All Success',
   Create = '[User] Create',
-  CreateSuccess = '[User] Create Success'
+  CreateSuccess = '[User] Create Success',
+  Delete = '[User] Delete',
+  DeleteSuccess = '[User] Delete Success',
 }
 
 // export const userGetAllAction = function () {
@@ -16,9 +18,9 @@ export enum UsersAction {
 // };
 
 export const userGetAllAction = createAction(
-  UsersAction.GetAll, 
+  UsersAction.GetAll,
   props<{
-    sort?: string
+    sort?: string;
   }>()
 );
 export const userGetAllSuccessAction = createAction(
@@ -30,12 +32,24 @@ export const userGetAllSuccessAction = createAction(
 export const userCreateAction = createAction(
   UsersAction.Create,
   props<{
-    form: UserCreatePayload
+    form: UserCreatePayload;
   }>()
-)
+);
 export const userCreateSuccessAction = createAction(
   UsersAction.CreateSuccess,
   props<{
-    user: User
+    user: User;
   }>()
-)
+);
+export const userDeleteAction = createAction(
+  UsersAction.Delete,
+  props<{
+    id: number;
+  }>()
+);
+export const userDeleteSuccessAction = createAction(
+  UsersAction.DeleteSuccess,
+  props<{
+    id: number;
+  }>()
+);
