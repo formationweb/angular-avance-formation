@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { User } from '../../core/interfaces/user.interface';
 
 @Component({
@@ -9,5 +9,11 @@ import { User } from '../../core/interfaces/user.interface';
   styleUrl: './user-card.component.css'
 })
 export class UserCardComponent {
-  @Input() user: User = {} as User
+  user = input<User>({} as User)
+
+  constructor() {
+    effect(() => {
+      console.log(this.user())
+    })
+  }
 }

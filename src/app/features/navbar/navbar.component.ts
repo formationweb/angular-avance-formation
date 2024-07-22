@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { AppService } from '../../core/services/app.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,5 +9,12 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  title = 'Mon App'
+  private appService = inject(AppService)
+  title = this.appService.title
+
+  constructor() {
+    effect(() => {
+      console.log(this.title())
+    })
+  }
 }
