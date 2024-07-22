@@ -1,2 +1,9 @@
 
 <app-navbar />
+
+@for (user of users ; track user.id) {
+    <article>
+        <header>{{ user.name }}</header>
+        <p>{{ user.email }}</p>
+    </article>
+}
