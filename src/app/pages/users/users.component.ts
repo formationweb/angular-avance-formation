@@ -24,4 +24,8 @@ export class UsersComponent implements OnInit {
   createUser(form: NgForm) {
     this.userService.create(form.value).subscribe()
   }
+
+  deleteUser(id: number) {
+    this.userService.delete(id).subscribe()
+  }
 }

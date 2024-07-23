@@ -12,5 +12,5 @@
 </form>
 
 @for (u of users$ | async ; track u.id) {
-    <app-user-card [user]="u" />
+    <app-user-card [user]="u" (eventDelete)="deleteUser($event)" />
 }

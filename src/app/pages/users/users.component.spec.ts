@@ -61,7 +61,9 @@ describe('Users Component', () => {
 
     it('users est un tableau non vide', async () => {
         const elArticles = elView.querySelectorAll('article')
-        expect(component.users.length).toBeGreaterThan(0)
-        expect(elArticles.length).toBe(component.users.length)
+        component.users$.subscribe((users) => {
+            expect(users.length).toBeGreaterThan(0)
+            expect(elArticles.length).toBe(users.length)
+        })
     })
 })
