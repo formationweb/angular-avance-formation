@@ -28,7 +28,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "@picocss/pico/css/pico.min.css"
+              "@picocss/pico/css/pico.min.css",
+              "notyf/notyf.min.css"
             ],
             "scripts": []
           },

@@ -20,6 +20,7 @@
     "@angular/router": "^18.1.0",
     "@picocss/pico": "^2.0.6",
     "@signe/reactive": "^0.0.2",
+    "notyf": "^3.10.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

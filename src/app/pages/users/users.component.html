@@ -1,7 +1,15 @@
 
 <app-navbar />
 
-<!-- Ajouter formulaire de création ici -->
+<form (ngSubmit)="createUser(myForm)" #myForm="ngForm">
+    <label>Nom</label>
+    <input type="text" name="name" ngModel>
+
+    <label>Email</label>
+    <input type="text" name="email" ngModel>
+
+    <button>Création</button>
+</form>
 
 @for (u of users$ | async ; track u.id) {
     <app-user-card [user]="u" />
