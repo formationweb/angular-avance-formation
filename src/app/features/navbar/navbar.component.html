@@ -1,4 +1,7 @@
 <h1>{{ title$ | async }}</h1>
 
+<app-count [countObj]="myProp" />
+<button (click)="increment()">Increment</button>
+
 <input type="text" placeholder="Rechercher" [formControl]="propSearch">
 <button (click)="changeTitle()">Modifier le titre</button>

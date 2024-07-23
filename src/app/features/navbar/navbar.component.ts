@@ -4,11 +4,12 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
 import { UserService } from './../../core/services/user.service';
+import { CountComponent } from './count/count.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe],
+  imports: [ReactiveFormsModule, AsyncPipe, CountComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -17,6 +18,8 @@ export class NavbarComponent implements OnInit {
   private userService = inject(UserService)
   title$ = this.appService.title$
   propSearch: FormControl<string> = new FormControl()
+
+  myProp = { count: 0, title: 'Mon App' }
 
   ngOnInit(): void {
     this.propSearch.valueChanges
@@ -31,6 +34,11 @@ export class NavbarComponent implements OnInit {
   }
 
   changeTitle() {
-    this.appService.setTitle('Nouveau titre') // action
+    this.myProp.title = 'Nouveau titre'
+    this.appService.setTitle(this.myProp.title) // action
+  }
+
+  increment() {
+    this.myProp.count++
   }
 }
