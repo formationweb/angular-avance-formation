@@ -13,7 +13,7 @@ export class UserCardComponent {
 
   constructor() {
     effect(() => {
-      console.log(this.user())
+     // console.log(this.user())
     })
   }
 }

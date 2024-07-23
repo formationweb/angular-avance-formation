@@ -1,20 +1,28 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from '../../core/services/app.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   private appService = inject(AppService)
   title = this.appService.title
+  propSearch: FormControl<string> = new FormControl()
 
   constructor() {
     effect(() => {
       console.log(this.title())
+    })
+  }
+
+  ngOnInit(): void {
+    this.propSearch.valueChanges.subscribe((str) => {
+      console.log(str)
     })
   }
 }
