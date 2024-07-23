@@ -1,5 +1,6 @@
-import { Observable, map, filter, Subject, BehaviorSubject, ReplaySubject, AsyncSubject } from "rxjs";
+import { Observable, map, filter, Subject, BehaviorSubject, ReplaySubject, AsyncSubject, combineLatest, forkJoin, timer, interval, of } from "rxjs";
 
+/*
 // const ob$ = new Observable((subscriber) => {
 //   subscriber.next(Math.random());
 //   setTimeout(() => {
@@ -28,3 +29,9 @@ ob$.next('d')
 ob$.complete()
 
 ob$.next('e')
+*/
+
+const ob1$ = timer(1000)
+const ob2$ = of('test')
+
+forkJoin([ ob1$, ob2$ ]).subscribe(console.log)
