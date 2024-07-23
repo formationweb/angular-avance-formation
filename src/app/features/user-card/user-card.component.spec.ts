@@ -17,11 +17,11 @@ describe('UserCardComponent', () => {
     component = fixture.componentInstance;
     elView = fixture.nativeElement
 
-    component.user = {
+    fixture.componentRef.setInput('user', {
       id: 1,
       name: 'ana',
       email: 'ana@gmail.com'
-    }
+    })
 
     fixture.detectChanges();
   });
@@ -29,7 +29,7 @@ describe('UserCardComponent', () => {
   it('les informations sont bien affichées dans la carte', () => {
       const nameEl = elView.querySelector('[userName]')
       const emailEl = elView.querySelector('[userEmail]')
-      expect(nameEl?.textContent).toContain(component.user.name)
-      expect(emailEl?.textContent).toContain(component.user.email)
+      expect(nameEl?.textContent).toContain(component.user().name)
+      expect(emailEl?.textContent).toContain(component.user().email)
   });
 });

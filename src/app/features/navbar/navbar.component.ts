@@ -1,6 +1,7 @@
 import { Component, OnInit, effect, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from '../../core/services/app.service';
+import { UserService } from './../../core/services/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,6 +12,7 @@ import { AppService } from '../../core/services/app.service';
 })
 export class NavbarComponent implements OnInit {
   private appService = inject(AppService)
+  private userService = inject(UserService)
   title = this.appService.title
   propSearch: FormControl<string> = new FormControl()
 
@@ -22,7 +24,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.propSearch.valueChanges.subscribe((str) => {
-      console.log(str)
+      this.userService.setSearch(str)
     })
   }
 }
