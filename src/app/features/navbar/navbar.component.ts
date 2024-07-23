@@ -1,5 +1,6 @@
 import { Component, OnInit, effect, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
 import { UserService } from './../../core/services/user.service';
 
@@ -23,7 +24,13 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.propSearch.valueChanges.subscribe((str) => {
+    this.propSearch.valueChanges
+    .pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    )
+    .subscribe((str) => {
+      console.log(str)
       this.userService.setSearch(str)
     })
   }
