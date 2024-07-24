@@ -1,10 +1,14 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { UserService } from '../../core/services/user.service';
 import { ColorComponent } from '../../features/color/color.component';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
+import { IStore } from '../../store/store.interface';
+import { usersActionGetAll } from '../../store/users/users.action';
+import { selectUsersList } from '../../store/users/users.selector';
 
 @Component({
   selector: 'app-users',
@@ -15,12 +19,15 @@ import { UserCardComponent } from '../../features/user-card/user-card.component'
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService);
-  users$ = this.userService.users$
+  private store = inject<Store<IStore>>(Store)
+  users$ = this.store.select(selectUsersList)
   colorSelected = 'red'
   //users = this.userService.usersFiltered
 
   ngOnInit(): void {
-    this.userService.getAll().subscribe();
+    this.store.dispatch(usersActionGetAll({
+      sort: 'name'
+    }))
   }
 
   createUser(form: NgForm) {
