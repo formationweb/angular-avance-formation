@@ -7,7 +7,7 @@ import { ColorComponent } from '../../features/color/color.component';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
 import { IStore } from '../../store/store.interface';
-import { userCreateAction, usersActionGetAll } from '../../store/users/users.action';
+import { userCreateAction, userDeleteAction, usersActionGetAll } from '../../store/users/users.action';
 import { selectUsersList } from '../../store/users/users.selector';
 
 @Component({
@@ -37,6 +37,6 @@ export class UsersComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.userService.delete(id).subscribe()
+    this.store.dispatch(userDeleteAction({ id }))
   }
 }
