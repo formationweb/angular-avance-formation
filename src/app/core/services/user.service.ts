@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { Observable, catchError, tap } from 'rxjs';
 import { User } from '../interfaces/user.interface';
 import { NotificationService } from './notification.service';
 
@@ -13,9 +13,7 @@ export class UserService {
   private http = inject(HttpClient);
   private notification = inject(NotificationService)
   readonly url = 'https://jsonplaceholder.typicode.com/users';
-  private _users$ = new BehaviorSubject<User[]>([])
   private _valueSearch = signal('')
-  users$ = this._users$.asObservable()
   valueSearch = this._valueSearch.asReadonly()
   // usersFiltered = computed(() => {
   //   return this.users()
@@ -24,20 +22,13 @@ export class UserService {
 
   //constructor(private http: HttpClient) {}
 
-  getAll(): Observable<User[]> {
-    return this.http.get<User[]>(this.url).pipe(
-      tap((users) => {
-        //const usersList = this._users$.value
-        this._users$.next(users)
-      })
-    )
+  getAll(sort?: string): Observable<User[]> {
+    return this.http.get<User[]>(this.url + (sort ? '?_sort=' + sort : ''))
   }
 
   create(payload: UserPayload): Observable<User> {
     return this.http.post<User>(this.url, payload).pipe(
-      tap((user) => {
-        const usersList = this._users$.value
-        this._users$.next([ ...usersList, user ])
+      tap(() => {
         this.notification.success('Utilisateur bien créé')
       }),
       catchError((err) => {
@@ -47,7 +38,7 @@ export class UserService {
     )
   }
 
-  delete(id: number): Observable<void> {
+ /* delete(id: number): Observable<void> {
     return this.http.delete<void>(this.url + '/' + id).pipe(
       tap(() => {
         const usersFiltered = this._users$.value.filter(user => user.id != id)
@@ -59,7 +50,7 @@ export class UserService {
         throw err
       })
     )
-  }
+  }*/
 
   setSearch(str: string) {
     this._valueSearch.set(str)

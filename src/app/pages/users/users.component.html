@@ -1,5 +1,5 @@
 
-<app-navbar />
+<!-- <app-navbar /> -->
 
 
 <form (ngSubmit)="createUser(myForm)" #myForm="ngForm">
@@ -12,9 +12,6 @@
 
     <button>Création</button>
 </form>
-
-<app-color [(ngModel)]="colorSelected" />
-<p>Vous avez sélectionné {{ colorSelected }}</p>
 
 @for (u of users$ | async ; track u.id) {
     <app-user-card [user]="u" (eventDelete)="deleteUser($event)" />
