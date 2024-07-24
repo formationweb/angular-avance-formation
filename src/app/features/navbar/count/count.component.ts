@@ -3,24 +3,26 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DoCheck,
   Input,
-  inject
+  inject,
+  signal,
 } from '@angular/core';
 
 @Component({
   selector: 'app-count',
   standalone: true,
   imports: [JsonPipe],
-  templateUrl: './count.component.html',
-  styleUrl: './count.component.css',
+  template: ` <h1>{{ countObj | json }} - {{ count() }}</h1> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CountComponent {
+export class CountComponent implements DoCheck {
   private changeDetector = inject(ChangeDetectorRef);
-
   @Input() countObj!: { count: number; title: string };
+  count = signal(0)
 
-  // ngDoCheck() {
-  //   this.changeDetector.detectChanges()
-  // }
+  ngDoCheck(): void {
+    this.count.set(this.countObj.count)
+    //this.changeDetector.detectChanges()
+  }
 }
