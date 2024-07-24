@@ -1,4 +1,3 @@
-import { Observable, map, filter, Subject, BehaviorSubject, ReplaySubject, AsyncSubject, combineLatest, forkJoin, timer, interval, of } from "rxjs";
 
 /*
 // const ob$ = new Observable((subscriber) => {
@@ -31,7 +30,8 @@ ob$.complete()
 ob$.next('e')
 */
 
-const ob1$ = timer(1000)
-const ob2$ = of('test')
+// const ob1$ = timer(1000)
+// const ob2$ = of('test')
 
-forkJoin([ ob1$, ob2$ ]).subscribe(console.log)
+// forkJoin([ ob1$, ob2$ ]).subscribe(console.log)
+

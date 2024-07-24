@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
 import { UserService } from './../../core/services/user.service';
@@ -9,7 +10,7 @@ import { CountComponent } from './count/count.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe, CountComponent],
+  imports: [ReactiveFormsModule, AsyncPipe, CountComponent, RouterLink],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
