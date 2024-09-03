@@ -15,7 +15,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService)
-  users$: Observable<User[]> = this.userService.users$
+  users: Signal<User[]> = this.userService.usersFiltered
   username: Signal<string> = computed(() => this.userService.username().toUpperCase())
   
   constructor() {

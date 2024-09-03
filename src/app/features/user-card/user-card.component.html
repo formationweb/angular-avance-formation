@@ -1,4 +1,5 @@
 <article>
-    <header userName>{{ user.name }}</header>
-    <p userEmail>{{ user.email }}</p>
+    @let myUser = user();
+    <header userName>{{ myUser.name }}</header>
+    <p userEmail>{{ myUser.email }}</p>
 </article>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { User } from '../../core/interfaces/user';
 
 @Component({
@@ -9,5 +9,6 @@ import { User } from '../../core/interfaces/user';
   styleUrl: './user-card.component.css'
 })
 export class UserCardComponent {
-  @Input() user: User = {} as User
+  //@Input() user: User = {} as User
+  user = input<User>({} as User)
 }

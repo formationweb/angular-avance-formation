@@ -1,47 +1,45 @@
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable, signal } from "@angular/core";
-import { BehaviorSubject, catchError, Observable, tap } from "rxjs";
-import { User } from "../interfaces/user";
+import { HttpClient } from '@angular/common/http';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
+import { User } from '../interfaces/user';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-    readonly url = 'https://jsonplaceholder.typicode.com/users'
-    private http = inject(HttpClient)
-    private _username = signal('')
-    username = this._username.asReadonly()
-   
-    private _users$ = new BehaviorSubject<User[]>([]) // state
-    users$ = this._users$.asObservable() // getter ou selector
+  readonly url = 'https://jsonplaceholder.typicode.com/users';
+  private http = inject(HttpClient);
+  private _username = signal('');
+  username = this._username.asReadonly();
 
-    getAll(): Observable<User[]> {
-        return this.http.get<User[]>(this.url)
-            .pipe(
-                tap((users) => {
-                    this._users$.next(users) // mutation
-                })
-            )
-    }
+  private _users = signal<User[]>([]);
+  users = this._users.asReadonly();
+  usersFiltered = computed(() =>
+    this.users().filter((user) => user.name.includes(this.username()))
+  );
 
-    create(payload: { name: string, email: string }): Observable<User> {
-        return this.http.post<User>(this.url, payload)
-        .pipe(
-            tap((user) => {
-               const users = this._users$.value
-               this._users$.next([
-                ...users,
-                user
-               ])
-            }),
-            catchError((err) => {
-                console.log(err)
-                throw err
-            })
-        )
-    }
+  getAll(): Observable<User[]> {
+    return this.http.get<User[]>(this.url).pipe(
+      tap((users) => {
+        this._users.set(users); // mutation
+      })
+    );
+  }
 
-    setSearch(str: string) {
-        this._username.set(str)
-    }
+  create(payload: { name: string; email: string }): Observable<User> {
+    return this.http.post<User>(this.url, payload).pipe(
+      tap((user) => {
+        const users = this.users();
+        this._users.set([...users, user]);
+      }),
+      catchError((err) => {
+        console.log(err);
+        throw err;
+      })
+    );
+  }
+
+  setSearch(str: string) {
+    this._username.set(str);
+  }
 }
