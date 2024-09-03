@@ -2,3 +2,14 @@
 <app-navbar />
 
 
+<!-- <article *ngFor="let user of users">
+    <header>{{ user.name }}</header>
+    {{ user.email }}
+</article> -->
+
+@for (user of users ; track user.id) {
+    <article>
+        <header>{{ user.name }}</header>
+        {{ user.email }}
+    </article>
+}
