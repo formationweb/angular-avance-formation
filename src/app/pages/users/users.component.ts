@@ -1,4 +1,4 @@
-import { Component, inject, OnInit} from '@angular/core';
+import { Component, computed, effect, inject, OnInit, Signal, WritableSignal} from '@angular/core';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserService } from '../../core/services/user.service';
 import { AsyncPipe, NgFor } from '@angular/common';
@@ -16,12 +16,16 @@ import { FormsModule, NgForm } from '@angular/forms';
 export class UsersComponent implements OnInit {
   private userService = inject(UserService)
   users$: Observable<User[]> = this.userService.users$
+  username: Signal<string> = computed(() => this.userService.username().toUpperCase())
+  
+  constructor() {
+    effect(() => {
+      console.log(this.userService.username())
+    })
+  }
   
   ngOnInit(): void {
     this.userService.getAll().subscribe() // action
-    this.userService.username.subscribe((str) => {
-      console.log(str)
-    })
   }
 
   createUser(form: NgForm) {

@@ -19,6 +19,6 @@ export class NavbarComponent {
   username = ''
 
   search() {
-    this.userService.username.next(this.username)
+    this.userService.setSearch(this.username)
   }
 }

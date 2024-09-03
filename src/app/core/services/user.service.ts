@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { BehaviorSubject, catchError, Observable, tap } from "rxjs";
 import { User } from "../interfaces/user";
 
@@ -9,7 +9,9 @@ import { User } from "../interfaces/user";
 export class UserService {
     readonly url = 'https://jsonplaceholder.typicode.com/users'
     private http = inject(HttpClient)
-    username = new BehaviorSubject<string>('')
+    private _username = signal('')
+    username = this._username.asReadonly()
+   
     private _users$ = new BehaviorSubject<User[]>([]) // state
     users$ = this._users$.asObservable() // getter ou selector
 
@@ -37,5 +39,9 @@ export class UserService {
                 throw err
             })
         )
+    }
+
+    setSearch(str: string) {
+        this._username.set(str)
     }
 }
