@@ -17,6 +17,9 @@
     <button>Créer</button>
 </form>
 
+<app-color [(ngModel)]="myColor" />
+{{ myColor }}
+
 <h1>Utilisateur recherché : {{ username() }}</h1>
 
 @for (u of users() ; track u.id) {
