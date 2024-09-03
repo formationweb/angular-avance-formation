@@ -1,10 +1,10 @@
 import { Component, computed, effect, inject, OnInit, Signal, WritableSignal} from '@angular/core';
 import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserService } from '../../core/services/user.service';
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { User } from '../../core/interfaces/user';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
