@@ -3,11 +3,12 @@ import { NavbarComponent } from '../../features/navbar/navbar.component';
 import { UserService } from '../../core/services/user.service';
 import { NgFor } from '@angular/common';
 import { User } from '../../core/interfaces/user';
+import { UserCardComponent } from '../../features/user-card/user-card.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NavbarComponent /*, NgFor*/],
+  imports: [NavbarComponent, UserCardComponent /*, NgFor*/],
   templateUrl: './users.component.html'
 })
 export class UsersComponent implements OnInit {

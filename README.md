@@ -1,8 +1,6 @@
-UserService
+UserCardComponent
 
 
 
-1. Créer un service UserService effectuant une requête HTTP pour récupérer des utilisateurs
-2. Afficher la liste d'utilisateurs dans UsersComponent an affichant le nom et email
-
-https://jsonplaceholder.typicode.com/users
+1. Créer un sous-composant UserCardComponent. Ce composant sera affiché en boucle dans UsersComponant. Chaque "carte" doit afficher un utilisateur (nom et email).
+2. Faire le test unitaire permettant de vérifier que les données de l'utilisateur (donnez des valeurs fictives à l'objet entrant) sont identiques au infos dans le template
