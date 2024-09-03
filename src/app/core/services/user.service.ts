@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, tap } from "rxjs";
+import { BehaviorSubject, catchError, Observable, tap } from "rxjs";
 import { User } from "../interfaces/user";
 
 @Injectable({
@@ -20,5 +20,22 @@ export class UserService {
                     this._users$.next(users) // mutation
                 })
             )
+    }
+
+    create(payload: { name: string, email: string }): Observable<User> {
+        return this.http.post<User>(this.url, payload)
+        .pipe(
+            tap((user) => {
+               const users = this._users$.value
+               this._users$.next([
+                ...users,
+                user
+               ])
+            }),
+            catchError((err) => {
+                console.log(err)
+                throw err
+            })
+        )
     }
 }

@@ -5,11 +5,12 @@ import { AsyncPipe, NgFor } from '@angular/common';
 import { User } from '../../core/interfaces/user';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NavbarComponent, UserCardComponent, AsyncPipe /*, NgFor*/],
+  imports: [NavbarComponent, UserCardComponent, AsyncPipe, FormsModule /*, NgFor*/],
   templateUrl: './users.component.html'
 })
 export class UsersComponent implements OnInit {
@@ -21,5 +22,9 @@ export class UsersComponent implements OnInit {
     this.userService.username.subscribe((str) => {
       console.log(str)
     })
+  }
+
+  createUser(form: NgForm) {
+    this.userService.create(form.value).subscribe()
   }
 }

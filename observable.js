@@ -5,7 +5,13 @@ const ob$ = new AsyncSubject()
 ob$.next('a')
 ob$.next('b')
 
-ob$.subscribe(console.log)
+ob$.subscribe({
+    next: console.log,
+    err: console.log,
+    complete: () => {
+        console.log('terminé')
+    }
+})
 
 ob$.next('c')
 ob$.complete()
