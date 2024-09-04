@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { UserState } from '../../store/users/users.state';
-import { UsersGetAllAction } from '../../store/users/users.action';
+import { UserCreateAction, UsersGetAllAction } from '../../store/users/users.action';
 
 @Component({
   selector: 'app-users',
@@ -33,6 +33,6 @@ export class UsersComponent implements OnInit {
   }
 
   createUser(form: NgForm) {
-    this.userService.create(form.value).subscribe()
+    this.store.dispatch(new UserCreateAction(form.value))
   }
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { User } from '../../core/interfaces/user';
-import { UsersGetAllAction } from './users.action';
+import { UserCreateAction, UsersGetAllAction } from './users.action';
 import { UserService } from '../../core/services/user.service';
 import { Observable, tap } from 'rxjs';
 
@@ -33,15 +33,29 @@ export class UserState {
     context: StateContext<UserStateModel>,
     action: UsersGetAllAction
   ): Observable<any> {
-   return this.userService.getAll(action.sort)
-    .pipe(
-        tap((users) => {
-           // const currentState = context.getState()
-            context.patchState({
-                usersList: users,
-                loading: false
-            })
-        })
-    )
+    return this.userService.getAll(action.sort).pipe(
+      tap((users) => {
+        // const currentState = context.getState()
+        context.patchState({
+          usersList: users,
+          loading: false,
+        });
+      })
+    );
+  }
+
+  @Action(UserCreateAction)
+  create(
+    context: StateContext<UserStateModel>,
+    action: UserCreateAction
+  ): Observable<any> {
+    return this.userService.create(action.form).pipe(
+      tap((user) => {
+        const currentState = context.getState();
+        context.patchState({
+          usersList: [...currentState.usersList, user],
+        });
+      })
+    );
   }
 }
