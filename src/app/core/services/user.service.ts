@@ -20,6 +20,10 @@ export class UserService {
         return this.http.post<User>(this.url, payload)
     }
 
+    delete(id: number): Observable<void> {
+        return this.http.delete<void>(this.url + '/' + id)
+    }
+
     setSearch(str: string) {
         this._username.set(str)
     }

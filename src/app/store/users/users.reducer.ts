@@ -1,6 +1,6 @@
-import { createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import { User } from '../../core/interfaces/user';
-import { UserActions, userGetAllAction, userGetAllSuccessAction } from './users.action';
+import { userActions } from './users.action';
 
 export interface UserStates {
   usersList: User[];
@@ -33,16 +33,35 @@ export const initialState: UserStates = {
   return initialState
 }*/
 
+
 export const usersReducer = createReducer(
   initialState,
-  on(userGetAllSuccessAction, (state: UserStates,  action: { users: User[] }): UserStates => {
+  on(userActions.getAllSuccess, (state: UserStates,  action: { users: User[] }): UserStates => {
     return {
       ...state,
       usersList: action.users,
       loading: false
     }; 
   }),
- /* on(...autreAction, () => {
-
-  })*/
+  on(userActions.createSuccess, (state: UserStates,  action: { user: User }): UserStates => {
+    return {
+      ...state,
+      usersList: [
+        ...state.usersList,
+        action.user
+      ]
+    }; 
+  }),
+  on(userActions.deleteSuccess, (state: UserStates,  action: {id: number }): UserStates => {
+    return {
+      ...state,
+      usersList: state.usersList.filter(user => user.id != action.id)
+    }; 
+  }),
 )
+
+
+export const usersFeature = createFeature({
+  name: 'users',
+  reducer: usersReducer
+})
