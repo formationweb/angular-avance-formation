@@ -1,0 +1,11 @@
+Utiliser le contrôle de flux @if, @for ou @switch au lieu de ngIf, ngFor ou ngSwitch
+
+Exemple:
+
+@if (condition) {
+  <!-- Code à exécuter si la condition est vraie -->
+}
+
+@for (item of items; track item.id) {
+  <!-- Code à exécuter pour chaque élément de la liste -->
+}

@@ -21,7 +21,7 @@ import { userActions } from '../../store/users/users.action';
 export class UsersComponent implements OnInit {
   private userService = inject(UserService)
   private store = inject<Store<IStore>>(Store)
-  users$: Observable<User[]> = this.store.select(usersFeature.selectUsersList)
+  users$: Observable<User[]> = this.userService.usersFiltered$
   username: Signal<string> = computed(() => this.userService.username().toUpperCase())
   
   constructor() {

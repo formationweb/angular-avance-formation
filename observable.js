@@ -1,13 +1,11 @@
-import { switchMap, mergeMap, of, interval, map } from 'rxjs'
+import { switchMap, mergeMap, of, interval, combineLatest, map, forkJoin } from "rxjs";
+
+// const ob1$ = interval(1000).pipe(map(() => Math.random()));
+// const ob2$ = interval(500);
 
 const ob1$ = of(1, 2, 3)
+const ob2$ = of('a', 'b', 'c')
 
-ob1$.pipe(
-    // map((nb) => {
-    //     return nb * 2
-    // })
-    switchMap((nb) => {
-        return of(nb * 2)
-    })
-).subscribe(console.log)
+//combineLatest([ ob1$, ob2$ ]).subscribe(console.log)
 
+forkJoin([ob1$, ob2$]).subscribe(console.log)

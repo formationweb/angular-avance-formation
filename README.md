@@ -1,4 +1,5 @@
-1. Ajout d'un utilisateur avec NgRx
-2. Faire la suppression  avec NgRx
+Exercice Extra: 
 
-> Pas d'injection de dépendance dans UserCardComponent
+Réaliser le filtre de la liste des utilisateurs à l'aide de la barre de recherche.
+
+Utiliser les opérateurs RxJS (combinaison par exemple) dans le service pour réaliser cet exercice
