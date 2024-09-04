@@ -1,6 +1,4 @@
 
-<app-navbar />
-
 
 <!-- <article *ngFor="let user of users">
     <header>{{ user.name }}</header>
@@ -19,6 +17,23 @@
 
 <h1>Utilisateur recherché : {{ username() }}</h1>
 
-@for (u of users$ | async ; track u.id) {
+<!-- @for (u of users$ | async ; track u.id) {
     <app-user-card [user]="u" />
+} -->
+
+<div style="height: 500px">
+
+</div>
+
+@defer (on viewport) {
+    <app-navbar />
+}
+@loading {
+    Chargement ...
+}
+@error {
+    Erreur du Chargement
+}
+@placeholder {
+    <div>Les commentaires...</div>
 }
