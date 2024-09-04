@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   template: `
     <nav>
       {{ title }}
-      <input type="text" [(ngModel)]="username"><button (click)="search()">Rechercher</button>
+      <input type="text" [(ngModel)]="username" placeholder="Rechercher"><button (click)="search()">Rechercher</button>
       <a routerLink="/login">Se connecter</a>
     </nav>
   `
