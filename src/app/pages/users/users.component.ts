@@ -6,6 +6,9 @@ import { User } from '../../core/interfaces/user';
 import { UserCardComponent } from '../../features/user-card/user-card.component';
 import { Observable } from 'rxjs';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Store } from '@ngxs/store';
+import { UserState } from '../../store/users/users.state';
+import { UsersGetAllAction } from '../../store/users/users.action';
 
 @Component({
   selector: 'app-users',
@@ -15,7 +18,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService)
-  users$: Observable<User[]> = this.userService.users$
+  private store = inject(Store)
+  users$: Observable<User[]> = this.store.select(UserState.getUsersList)
   username: Signal<string> = computed(() => this.userService.username().toUpperCase())
   
   constructor() {
@@ -25,7 +29,7 @@ export class UsersComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.userService.getAll().subscribe() // action
+    this.store.dispatch(new UsersGetAllAction('name'))
   }
 
   createUser(form: NgForm) {

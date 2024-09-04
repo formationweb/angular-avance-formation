@@ -11,34 +11,13 @@ export class UserService {
     private http = inject(HttpClient)
     private _username = signal('')
     username = this._username.asReadonly()
-   
-    private _users$ = new BehaviorSubject<User[]>([]) // state
-    users$ = this._users$.asObservable() // getter ou selector
 
-    getAll(): Observable<User[]> {
-        return this.http.get<User[]>(this.url)
-            .pipe(
-                tap((users) => {
-                    this._users$.next(users) // mutation
-                })
-            )
+    getAll(sort?: string): Observable<User[]> {
+        return this.http.get<User[]>(this.url + (sort ? '?_sort=' + sort : ''))
     }
 
     create(payload: { name: string, email: string }): Observable<User> {
         return this.http.post<User>(this.url, payload)
-        .pipe(
-            tap((user) => {
-               const users = this._users$.value
-               this._users$.next([
-                ...users,
-                user
-               ])
-            }),
-            catchError((err) => {
-                console.log(err)
-                throw err
-            })
-        )
     }
 
     setSearch(str: string) {
